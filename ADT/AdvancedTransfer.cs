@@ -166,7 +166,9 @@ namespace ADT
             {
                 if (line.Contains("error:"))
                 {
-                    MessageBox.Show(line);
+                    Invoke(new MethodInvoker(delegate () {
+                        label1.Text = line;
+                    }));                    
                 }
                 if (!line.Contains("daemon not running.") && !line.Contains("* daemon started successfully") && !line.Contains("adb server version"))
                 {
@@ -175,7 +177,7 @@ namespace ADT
                         listBox1.Items.Add(line);
                         textBox1.Text = ListPath;
                     }));
-                }     
+                }         
             }
         }
         private void ADBAsync(string command)
@@ -351,6 +353,18 @@ namespace ADT
                 im.IsBackground = true;
                 isBusy = true;
                 im.Start();
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Process[] ps = Process.GetProcessesByName("adb.exe");
+            if (ps.Length > 0)
+            {
+                foreach(Process p in ps)
+                {
+                    p.Kill();
+                }                                        
             }
         }
     }
