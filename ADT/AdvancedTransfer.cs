@@ -285,11 +285,11 @@ namespace ADT
             if(listBox1.SelectedItems!=null)
             {
                 string lp=listBox1.SelectedItem.ToString();
-                ListPath = $"{textBox1.Text}/{lp}";                
-                if(ListPath.Contains(" "))
+                if(lp.Contains(" "))
                 {
-                    ListPath = ListPath.Replace(" ", "\\ ");
+                    lp = lp.Replace(" ", "\\ ");
                 }
+                ListPath = $"{textBox1.Text}/{lp}";                               
                 if (!isBusy)
                 {                    
                     Thread ls = new Thread(listDirectory);
