@@ -320,7 +320,12 @@ namespace ADT
             }
             if (listBox1.SelectedItem != null) 
             {
-                File2Copy = textBox1.Text + "/" + listBox1.SelectedItem.ToString();
+                string p = listBox1.SelectedItem.ToString();
+                if(p.Contains(" "))
+                {
+                    p = p.Replace(" ", "\\ ");
+                }
+                File2Copy = textBox1.Text + "/" + p;
                 Thread s = new Thread(Export);
                 s.IsBackground = true;
                 isBusy = true;
