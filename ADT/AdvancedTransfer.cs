@@ -30,7 +30,7 @@ namespace ADT
         }
         private void ADBPull()
         {
-            ADBAsync($"pull {File2Copy} \"{F2Save}\"");
+            ADBAsync($"pull \"{File2Copy}\" \"{F2Save}\"");
         }
 
         private void ADBPush()
@@ -86,7 +86,7 @@ namespace ADT
                 {
                     textBox1.Text = ListPath;
                 }));
-                string m = ADB($"shell ls {ListPath}");
+                string m = ADB($"shell ls \"{ListPath}\"");
                 listBackend(m);
             }
             else
@@ -286,6 +286,10 @@ namespace ADT
             {
                 string lp=listBox1.SelectedItem.ToString();
                 ListPath = $"{textBox1.Text}/{lp}";                
+                if(ListPath.Contains(" "))
+                {
+                    ListPath = ListPath.Replace(" ", "\\ ");
+                }
                 if (!isBusy)
                 {                    
                     Thread ls = new Thread(listDirectory);
