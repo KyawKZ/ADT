@@ -41,8 +41,8 @@ namespace ADT
         {
             ProcessStartInfo psi = new ProcessStartInfo()
             {
-                FileName = @"C:\adb\adb.exe",
-                Arguments = command,
+                FileName = "cmd.exe",
+                Arguments = $" /c C:\\adb\\adb.exe {command}",
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 RedirectStandardOutput = true
@@ -86,7 +86,7 @@ namespace ADT
                 {
                     textBox1.Text = ListPath;
                 }));
-                string m = ADB($"shell ls \"{ListPath}\"");
+                string m = ADB($"shell ls {ListPath}");
                 listBackend(m);
             }
             else
@@ -154,6 +154,8 @@ namespace ADT
         }
         private void listBackend(string list)
         {
+            Console.WriteLine($"Log for {ListPath}");
+            Console.WriteLine(list);
             if (!list.Contains("daemon not running.") && !list.Contains("daemon started successfully") && !list.Contains("error:"))
             {
                 Invoke(new MethodInvoker(delegate ()
@@ -289,14 +291,18 @@ namespace ADT
                 {
                     lp = lp.Replace(" ", "\\ ");
                 }
-                ListPath = $"{textBox1.Text}/{lp}";                               
+                ListPath = $"{textBox1.Text}/{lp}";
                 if (!isBusy)
                 {                    
                     Thread ls = new Thread(listDirectory);
                     ls.IsBackground = true;
                     isBusy = true;
                     ls.Start();
-                }                
+                }
+                else
+                {
+                    MessageBox.Show("Busy");
+                }  
             }
         }
 
