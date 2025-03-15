@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ADT
 {
@@ -26,10 +27,24 @@ namespace ADT
         public string F2I = "";
         private void AdvancedTransfer_Load(object sender, EventArgs e)
         {
+            if (!Helper.FileIntegrityCorrect())
+            {
+                MessageBox.Show("Application Will Exit");
+                Application.Exit();
+            }
+            else
+            {
+                EnvironmentPathModifier.AddDirectoryToUserPath(@"C:\adb");
+                Helper.ContextMenuAdded();                
+            }
             textBox1.ReadOnly = true;
         }
         private void ADBPull()
         {
+            if (File2Copy.Contains("\\"))
+            {
+                File2Copy=File2Copy.Replace("\\", "");
+            }
             ADBAsync($"pull \"{File2Copy}\" \"{F2Save}\"");
         }
 
