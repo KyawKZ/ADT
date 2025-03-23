@@ -34,7 +34,6 @@ namespace ADT
             }
             else
             {
-                EnvironmentPathModifier.AddDirectoryToUserPath(@"C:\adb");
                 Helper.ContextMenuAdded();                
             }
             textBox1.ReadOnly = true;
@@ -101,7 +100,8 @@ namespace ADT
                 {
                     textBox1.Text = ListPath;
                 }));
-                string m = ADB($"shell ls {ListPath}");
+                string m = "";
+                m = ADB($"shell ls {ListPath}");
                 listBackend(m);
             }
             else
@@ -201,8 +201,8 @@ namespace ADT
         {
             ProcessStartInfo psi = new ProcessStartInfo()
             {
-                FileName = @"C:\adb\adb.exe",
-                Arguments = command,
+                FileName = "cmd.exe",
+                Arguments = $" /c C:\\adb\\adb.exe {command}",
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 RedirectStandardOutput = true
@@ -385,7 +385,6 @@ namespace ADT
                 im.Start();
             }
         }
-
         private void button6_Click(object sender, EventArgs e)
         {
             Process[] ps = Process.GetProcessesByName("adb.exe");
@@ -396,6 +395,11 @@ namespace ADT
                     p.Kill();
                 }                                        
             }
+        }
+
+        private void AdvancedTransfer_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

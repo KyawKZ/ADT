@@ -172,6 +172,7 @@
             this.Name = "AdvancedTransfer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AdvancedTransfer";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AdvancedTransfer_FormClosed);
             this.Load += new System.EventHandler(this.AdvancedTransfer_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -1,19 +1,15 @@
 ﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ADT
 {
     internal class Helper
     {
+        public static ProgressBar progressBar1,progressBar2;
         public static string ImportFileDialog()
         {
             string file = null;

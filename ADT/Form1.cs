@@ -23,24 +23,20 @@ namespace ADT
                 Application.Exit();
             }
             else
-            {
-                EnvironmentPathModifier.AddDirectoryToUserPath(@"C:\adb");
+            {               
                 Helper.ContextMenuAdded();
                 textBox1.ReadOnly = true;
-                textBox2.ReadOnly = true;
-                button3.Enabled = true;
+                textBox2.ReadOnly = true;     
                 if (!string.IsNullOrEmpty(itemPath))
                 {
                     textBox2.Text = itemPath;
-                    textBox1.Text = "/sdcard";
-                    button3.Enabled = false;
+                    textBox1.Text = "/sdcard";                    
                 }
             }
         }
         private void Push()
         {
-            ADB($"push \"{source}\" {destination}");
-            isBusy = false;
+            ADB($"push \"{source}\" {destination}");          
         }
         private void ADB( string command)
         {
@@ -57,6 +53,8 @@ namespace ADT
             p.OutputDataReceived += ADBHandler;
             p.Start();            
             p.BeginOutputReadLine();
+            p.WaitForExit();
+            isBusy = false;
         }
         
         
@@ -122,6 +120,13 @@ namespace ADT
             }
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Form f = new AdvancedTransfer();
+            this.Hide();
+            f.Show();
+        }
+
         private void button2_Click(object sender, EventArgs e)
         {
             if (!isBusy)
@@ -134,62 +139,5 @@ namespace ADT
                 p.Start();
             }
         }
-    }
-    public class EnvironmentPathModifier
-    {
-        public static void AddDirectoryToUserPath(string directoryToAdd)
-        {
-            try
-            {
-                string pathVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
-                if (pathVariable != null && !pathVariable.Contains(directoryToAdd))
-                {
-                    string newPath = pathVariable + ";" + directoryToAdd;
-                    Environment.SetEnvironmentVariable("PATH", newPath, EnvironmentVariableTarget.User);                    
-                    Console.WriteLine($"Added '{directoryToAdd}' to the user PATH.");                    
-                    BroadcastEnvironmentChange();
-                }
-                else
-                {
-                    if (pathVariable != null && pathVariable.Contains(directoryToAdd))
-                    {
-                        Console.WriteLine($"'{directoryToAdd}' is already in the user PATH.");
-                    }
-                    else
-                    {                        
-                        Environment.SetEnvironmentVariable("PATH", directoryToAdd, EnvironmentVariableTarget.User);
-                        Console.WriteLine($"Created user PATH and added '{directoryToAdd}'.");
-                        BroadcastEnvironmentChange();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error adding directory to PATH: {ex.Message}");
-            }
-        }
-
-        private static void BroadcastEnvironmentChange()
-        {
-            try
-            {
-                //Send WM_SETTINGCHANGE to all top level windows.
-                IntPtr HWND_BROADCAST = (IntPtr)0xffff;
-                int WM_SETTINGCHANGE = 0x001A;
-                int result = SendMessage(HWND_BROADCAST, WM_SETTINGCHANGE, 0, "Environment");
-
-                if (result == 0)
-                {
-                    Console.WriteLine("Warning: Environment change broadcast may have failed.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error broadcasting environment change: {ex.Message}");
-            }
-        }
-
-        [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
-        private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, string lParam);
     }
 }
