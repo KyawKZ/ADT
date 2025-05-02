@@ -164,6 +164,14 @@ namespace ADT
                         Directory.CreateDirectory(F2Save); 
                     }
                     ADBPull();
+                    if (Directory.Exists(F2Save))
+                    {
+                        DialogResult dl = MessageBox.Show($"File Save To Folder :\n {F2Save}\nDo You Want To Open?", "Open?", MessageBoxButtons.YesNo);
+                        if (dl == DialogResult.Yes)
+                        {
+                            Process.Start(F2Save);
+                        }                        
+                    }
                 }                
             }
         }

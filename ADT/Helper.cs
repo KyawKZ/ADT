@@ -8,8 +8,7 @@ using System.Windows.Forms;
 namespace ADT
 {
     internal class Helper
-    {
-        public static ProgressBar progressBar1,progressBar2;
+    {       
         public static string ImportFileDialog()
         {
             string file = null;
